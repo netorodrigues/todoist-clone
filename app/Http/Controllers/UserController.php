@@ -32,10 +32,10 @@ class UserController extends Controller
             $name = $request->input('name');
             $email = $request->input('email');
             $password = $request->input('password');
-
+            $preferName = $request->input('prefer_name') ?? '';
             try {
 
-                $user = $this->userService->create($name, $email, $password);
+                $user = $this->userService->create($name, $email, $password, $preferName);
 
                 return response()->json(['user' => $user, 'message' => 'CREATED'], 201);
 

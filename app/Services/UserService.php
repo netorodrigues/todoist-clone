@@ -3,19 +3,43 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
+use App\Exceptions\APIException;
 
 class UserService{
 
-    public function create(String $name, String $email, String $password){
+    public $userRepository;
 
-        $user = new User;
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = app('hash')->make($password);
+    public function __construct(UserRepositoryInterface $userRepository){
+        $this->userRepository = $userRepository;
+    }
 
-        $user->save();
+    public function create(String $name, String $email, String $password, String $preferName){
+        $existingUser = $this->userRepository->getByEmail($email);
 
+        if (!empty($existingUser)) throw new APIException("User with this email already exists", ['email' => $email]);
+
+        $hashedPassword = app('hash')->make($password);
+
+        $user = $this->userRepository->create($name, $preferName, $email, $hashedPassword);
         return $user;
+    }
 
+    public function edit(Int $userId, Array $data){
+        $userExists = $this->userRepository->getById($userId);
+
+        if (empty($userExists)) throw new APIException("User with this id does not exists", ['id' => $userId]);
+
+        $wasEdited = $this->userRepository->edit($userId, $data);
+
+        if ($wasEdited) {
+            return $this->userRepository->getById($userId);
+        }
+
+        return false;
+    }
+
+    public function delete(Int $userId){
+        return $this->userRepository->delete($userId);
     }
 }
