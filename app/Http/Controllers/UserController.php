@@ -50,7 +50,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function get()
     {
         return response()->json(auth('api')->user(), 200);
     }
