@@ -9,7 +9,7 @@ class UserServiceTest extends TestCase
 {
     use DatabaseTransactions;
     private $userService;
-    private $nonExistingId = -1;
+    private $invalidId = -1;
 
     public function setUp(): void{
         parent::setUp();
@@ -49,7 +49,7 @@ class UserServiceTest extends TestCase
     public function cannot_edit_non_existing_user()
     {
         $this->expectException(APIException::class);
-        $editedUser = $this->userService->edit($this->nonExistingId, ['email' => 'new-email']);
+        $editedUser = $this->userService->edit($this->invalidId, ['email' => 'new-email']);
     }
 
     /** @test */
@@ -65,7 +65,7 @@ class UserServiceTest extends TestCase
     /** @test */
     public function receive_same_response_trying_to_delete_non_existing_user()
     {
-        $wasDeleted = $this->userService->delete($this->nonExistingId);
+        $wasDeleted = $this->userService->delete($this->invalidId);
         $this->assertTrue($wasDeleted === true);
     }
 
