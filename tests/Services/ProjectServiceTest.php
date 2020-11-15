@@ -15,7 +15,7 @@ class ProjectServiceTest extends TestCase
     private $userService;
     private $userInstance;
 
-    private $invalidId = -1;
+    private $nonExistingId = -1;
 
     public function setUp(): void{
         parent::setUp();
@@ -28,30 +28,40 @@ class ProjectServiceTest extends TestCase
     /** @test */
     public function can_create_project()
     {
-        $project = $this->projectService->create($this->userInstance['id'], "test_project", "#fff");
+        $project = $this->projectService->create($this->userInstance['id'], "test_project", "FFFFFF");
         $this->assertTrue(is_array($project));
         $this->assertTrue(array_key_exists('id', $project));
+    }
+
+    /** @test */
+    public function cannot_create_project_with_invalid_color()
+    {
+        $this->expectException(APIException::class);
+        $project = $this->projectService->create($this->userInstance['id'], "test_project", "invalid-color");
     }
 
     /** @test */
     public function cannot_create_project_for_invalid_user()
     {
         $this->expectException(APIException::class);
-        $response = $this->projectService->create($this->invalidId, 'invalid-project', '#fff');
+        $response = $this->projectService->create($this->nonExistingId, 'invalid-project', 'fff');
     }
 
     /** @test */
     public function can_edit_existing_project()
     {
-        $project = $this->projectService->create($this->userInstance['id'], "test_project", "#fff");
+        $project = $this->projectService->create($this->userInstance['id'], "test_project", "fff");
         $this->assertTrue(is_array($project));
 
-        $updatedProject = $this->projectService->edit($this->userInstance['id'], $project['id'],
-        array("name" => "new_test_project_name", "color" => "#000"));
+        $updatedProject = $this->projectService->edit(
+            $this->userInstance['id'],
+            $project['id'],
+            array("name" => "new_test_project_name", "color" => "000")
+        );
 
         $this->assertTrue(is_array($updatedProject));
         $this->assertTrue($updatedProject['name'] === 'new_test_project_name');
-        $this->assertTrue($updatedProject['color'] === '#000');
+        $this->assertTrue($updatedProject['color'] === '000');
     }
 
     /** @test */
@@ -69,9 +79,30 @@ class ProjectServiceTest extends TestCase
     }
 
     /** @test */
+    public function cannot_edit_other_user_project()
+    {
+        $project = $this->projectService->create(
+            $this->userInstance['id'],
+            "test_project",
+            "fff"
+        );
+
+        $this->assertTrue(is_array($project));
+
+        $anotherUser = $this->userService->create('another-user', 'another-email', 'another-password', 'another_prefer_name');
+
+        $this->expectException(APIException::class);
+        $response = $this->projectService->edit(
+            $anotherUser['id'],
+            $project['id'],
+            ["name" => 'forbidden-project-edit', "color" =>'000']
+        );
+    }
+
+    /** @test */
     public function can_delete_project()
     {
-        $project = $this->projectService->create($this->userInstance['id'], "test_project", "#fff");
+        $project = $this->projectService->create($this->userInstance['id'], "test_project", "fff");
         $this->assertTrue(is_array($project));
 
         $wasDeleted = $this->projectService->delete($this->userInstance['id'], $project['id']);
