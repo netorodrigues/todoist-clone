@@ -23,7 +23,11 @@ class ProjectService
 
     private function isHexColor($hex)
     {
-        return ctype_xdigit($hex);
+        $hexWithoutHashtag = explode('#', $hex);
+
+        if (count($hexWithoutHashtag) !== 2) return false;
+
+        return ctype_xdigit($hexWithoutHashtag[1]);
     }
 
     private function verifyIfUserIsProjectOwner($userId, $projectId){
