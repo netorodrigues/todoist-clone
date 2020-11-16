@@ -22,5 +22,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\ProjectRepositoryInterface',
             'App\Repositories\Eloquent\ProjectRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\TaskRepositoryInterface',
+            'App\Repositories\Eloquent\TaskRepository'
+        );
     }
 }

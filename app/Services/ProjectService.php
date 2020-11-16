@@ -10,7 +10,7 @@ class ProjectService
 {
 
     private $projectRepository;
-    public $userRepository;
+    private $userRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,

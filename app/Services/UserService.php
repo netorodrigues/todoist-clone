@@ -7,7 +7,7 @@ use App\Exceptions\APIException;
 
 class UserService{
 
-    public $userRepository;
+    private $userRepository;
 
     public function __construct(UserRepositoryInterface $userRepository){
         $this->userRepository = $userRepository;
