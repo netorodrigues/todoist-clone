@@ -30,7 +30,7 @@ class ProjectService
         return ctype_xdigit($hexWithoutHashtag[1]);
     }
 
-    private function verifyIfUserIsProjectOwner($userId, $projectId){
+    public function userIsProjectOwner($userId, $projectId){
         $userProjects = $this->projectRepository->getByUser($userId);
 
         foreach ($userProjects as $userProject) {
@@ -71,7 +71,7 @@ class ProjectService
             throw new APIException("Trying to edit non-existing project", ['projectId' => $projectId]);
         }
 
-        $userHaveProject = $this->verifyIfUserIsProjectOwner($userId, $projectId);
+        $userHaveProject = $this->userIsProjectOwner($userId, $projectId);
 
         if (!$userHaveProject){
             throw new APIException("Trying to edit project of other user", ['userId' => $userId, 'projectId' => $projectId]);
@@ -100,7 +100,7 @@ class ProjectService
             throw new APIException("Trying to delete non-existing project", ['projectId' => $projectId]);
         }
 
-        $userHaveProject = $this->verifyIfUserIsProjectOwner($userId, $projectId);
+        $userHaveProject = $this->userIsProjectOwner($userId, $projectId);
 
         if (!$userHaveProject){
             throw new APIException("Trying to delete project of other user", ['userId' => $userId, 'projectId' => $projectId]);

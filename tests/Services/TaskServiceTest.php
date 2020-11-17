@@ -79,12 +79,9 @@ class TaskServiceTest extends TestCase
             $this->userInstance['id'], $task['id'], ['title' => 'new-title']
         );
 
-        $this->assertTrue(array_key_exists('id',$newReponse));
+        $this->assertTrue(array_key_exists('id',$newResponse));
         $this->assertTrue($newResponse['id'] === $task['id']);
         $this->assertTrue($newResponse['title'] === 'new-title');
-
-
-
      }
 
      /** @test */

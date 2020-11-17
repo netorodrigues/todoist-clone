@@ -22,6 +22,8 @@ interface TaskRepositoryInterface{
 
     public function markAsDone(Int $taskId): bool;
 
+    public function getDoneByUser(Int $userId): Array;
+
     public function edit(
         Int $taskId,
         Array $data
