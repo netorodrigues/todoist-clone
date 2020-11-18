@@ -2,21 +2,26 @@
 
 namespace App\Services;
 
-use App\Repositories\UserRepositoryInterface;
 use App\Exceptions\APIException;
+use App\Repositories\UserRepositoryInterface;
 
-class UserService{
+class UserService
+{
 
     private $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository){
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
         $this->userRepository = $userRepository;
     }
 
-    public function create(String $name, String $email, String $password, String $preferName){
+    public function create(String $name, String $email, String $password, String $preferName)
+    {
         $existingUser = $this->userRepository->getByEmail($email);
 
-        if (!empty($existingUser)) throw new APIException("User with this email already exists", ['email' => $email]);
+        if (!empty($existingUser)) {
+            throw new APIException("User with this email already exists", ['email' => $email]);
+        }
 
         $hashedPassword = app('hash')->make($password);
 
@@ -24,10 +29,13 @@ class UserService{
         return $user;
     }
 
-    public function edit(Int $userId, Array $data){
+    public function edit(Int $userId, array $data)
+    {
         $userExists = $this->userRepository->getById($userId);
 
-        if (empty($userExists)) throw new APIException("User with this id does not exists", ['id' => $userId]);
+        if (empty($userExists)) {
+            throw new APIException("User with this id does not exists", ['id' => $userId]);
+        }
 
         $wasEdited = $this->userRepository->edit($userId, $data);
 
@@ -38,7 +46,8 @@ class UserService{
         return false;
     }
 
-    public function delete(Int $userId){
+    public function delete(Int $userId)
+    {
         return $this->userRepository->delete($userId);
     }
 }

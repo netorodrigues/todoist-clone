@@ -2,25 +2,25 @@
 
 namespace App\Repositories;
 
-interface UserRepositoryInterface{
+interface UserRepositoryInterface
+{
 
     public function create(
         String $name,
         String $preferName,
         String $email,
         String $password
-    ) : Array;
+    ): array;
 
-    public function getById(Int $userId) : Array;
+    public function getById(Int $userId): array;
 
-    public function getByEmail(String $email): Array;
+    public function getByEmail(String $email): array;
 
     public function edit(
         Int $userId,
-        Array $data
+        array $data
     ): bool;
 
     public function delete(Int $userId): bool;
-
 
 }

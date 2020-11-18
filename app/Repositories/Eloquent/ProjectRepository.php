@@ -45,7 +45,8 @@ class ProjectRepository implements ProjectRepositoryInterface
         return true;
     }
 
-    public function delete(Int $projectId):bool{
+    public function delete(Int $projectId): bool
+    {
         $project = Project::find($projectId);
         if ($project) {
             $project->delete();

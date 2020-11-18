@@ -8,7 +8,7 @@ class APIException extends Exception
 {
     private $details;
 
-    public function __construct (string $message, array $details)
+    public function __construct(string $message, array $details)
     {
         parent::__construct($message, 400);
 

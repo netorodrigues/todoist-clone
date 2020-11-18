@@ -14,7 +14,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'user_id', 'color'
+        'name', 'user_id', 'color',
     ];
 
     /**
@@ -23,6 +23,6 @@ class Project extends Model
      * @var array
      */
     protected $hidden = [
-        'user_id'
+        'user_id',
     ];
 }

@@ -2,10 +2,11 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\TaskRepositoryInterface;
 use App\Models\Task;
+use App\Repositories\TaskRepositoryInterface;
 
-class TaskRepository implements TaskRepositoryInterface{
+class TaskRepository implements TaskRepositoryInterface
+{
 
     public function create(
         Int $userId,
@@ -15,7 +16,7 @@ class TaskRepository implements TaskRepositoryInterface{
         String $description,
         String $scheduledDate,
         String $rememberDate
-    ) : Array{
+    ): array{
 
         $task = new Task;
         $task->user_id = $userId;
@@ -32,30 +33,34 @@ class TaskRepository implements TaskRepositoryInterface{
         return $task->toArray();
     }
 
-    public function getById(Int $taskId) : Array{
+    public function getById(Int $taskId): array
+    {
         $task = Task::find($taskId);
         return $task ? $task->toArray() : [];
     }
 
-    public function getByUser(Int $userId): Array{
+    public function getByUser(Int $userId): array
+    {
         $tasks = Task::where('user_id', $userId)->get();
         return $tasks->toArray();
     }
 
-    public function getByProject(Int $projectId): Array{
+    public function getByProject(Int $projectId): array
+    {
         $tasks = Task::where('project_id', $projectId)->get();
         return $tasks->toArray();
     }
 
-
-    public function getDoneByUser(Int $userId): Array{
+    public function getDoneByUser(Int $userId): array
+    {
 
         $tasks = Task::where('user_id', $userId)
-                 ->where('is_done', true)->get();
+            ->where('is_done', true)->get();
         return $tasks->toArray();
     }
 
-    public function markAsDone(Int $taskId): bool{
+    public function markAsDone(Int $taskId): bool
+    {
 
         $task = Task::find($taskId);
         if (!$task) {
@@ -70,8 +75,8 @@ class TaskRepository implements TaskRepositoryInterface{
 
     public function edit(
         Int $taskId,
-        Array $data
-    ): bool{
+        array $data
+    ): bool {
         $task = Task::find($taskId);
 
         if (!$task) {
@@ -84,15 +89,15 @@ class TaskRepository implements TaskRepositoryInterface{
         return true;
     }
 
-    public function delete(Int $taskId): bool{
+    public function delete(Int $taskId): bool
+    {
         $task = Task::find($taskId);
 
-        if ($task){
+        if ($task) {
             $task->delete();
         }
 
         return true;
     }
-
 
 }

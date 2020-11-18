@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use App\Exceptions\APIException;
-
 use App\Repositories\TaskRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
-
 use App\Services\ProjectService;
 
 class TaskService
@@ -51,14 +49,13 @@ class TaskService
             throw new APIException("User not found.", ['user_id' => $userId]);
         }
 
-        if ($projectId){
+        if ($projectId) {
             $isProjectOwner = $this->projectService->userIsProjectOwner($userId, $projectId);
-            if (!$isProjectOwner){
+            if (!$isProjectOwner) {
                 throw new APIException("User is not project owner.",
-                ['user_id' => $userId, 'project_id' => $projectId]);
+                    ['user_id' => $userId, 'project_id' => $projectId]);
             }
         }
-
 
         return $this->taskRepository->create(
             $userId, $projectId, $priority, $title,

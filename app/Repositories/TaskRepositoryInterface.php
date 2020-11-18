@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-interface TaskRepositoryInterface{
+interface TaskRepositoryInterface
+{
 
     public function create(
         Int $userId,
@@ -12,24 +13,23 @@ interface TaskRepositoryInterface{
         String $description,
         String $scheduledDate,
         String $rememberDate
-    ) : Array;
+    ): array;
 
-    public function getById(Int $taskId) : Array;
+    public function getById(Int $taskId): array;
 
-    public function getByUser(Int $userId): Array;
+    public function getByUser(Int $userId): array;
 
-    public function getByProject(Int $projectId): Array;
+    public function getByProject(Int $projectId): array;
 
     public function markAsDone(Int $taskId): bool;
 
-    public function getDoneByUser(Int $userId): Array;
+    public function getDoneByUser(Int $userId): array;
 
     public function edit(
         Int $taskId,
-        Array $data
+        array $data
     ): bool;
 
     public function delete(Int $taskId): bool;
-
 
 }

@@ -2,24 +2,24 @@
 
 namespace App\Repositories;
 
-interface ProjectRepositoryInterface{
+interface ProjectRepositoryInterface
+{
 
     public function create(
         Int $userId,
         String $name,
         String $color
-    ) : Array;
+    ): array;
 
-    public function getById(Int $projectId) : Array;
+    public function getById(Int $projectId): array;
 
-    public function getByUser(Int $userId): Array;
+    public function getByUser(Int $userId): array;
 
     public function edit(
         Int $projectId,
-        Array $data
+        array $data
     ): bool;
 
     public function delete(Int $projectId): bool;
-
 
 }

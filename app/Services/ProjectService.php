@@ -25,16 +25,19 @@ class ProjectService
     {
         $hexWithoutHashtag = explode('#', $hex);
 
-        if (count($hexWithoutHashtag) !== 2) return false;
+        if (count($hexWithoutHashtag) !== 2) {
+            return false;
+        }
 
         return ctype_xdigit($hexWithoutHashtag[1]);
     }
 
-    public function userIsProjectOwner($userId, $projectId){
+    public function userIsProjectOwner($userId, $projectId)
+    {
         $userProjects = $this->projectRepository->getByUser($userId);
 
         foreach ($userProjects as $userProject) {
-            if ($userProject['id'] == $projectId){
+            if ($userProject['id'] == $projectId) {
                 return true;
             }
         }
@@ -50,7 +53,7 @@ class ProjectService
             throw new APIException("Trying to create project for non-existing user", ['userId' => $userId]);
         }
 
-        if(!$this->isHexColor($color)){
+        if (!$this->isHexColor($color)) {
             throw new APIException("Trying to create project with invalid color", ['color' => $color]);
         }
 
@@ -67,19 +70,19 @@ class ProjectService
 
         $project = $this->projectRepository->getById($projectId);
 
-        if (empty($project)){
+        if (empty($project)) {
             throw new APIException("Trying to edit non-existing project", ['projectId' => $projectId]);
         }
 
         $userHaveProject = $this->userIsProjectOwner($userId, $projectId);
 
-        if (!$userHaveProject){
+        if (!$userHaveProject) {
             throw new APIException("Trying to edit project of other user", ['userId' => $userId, 'projectId' => $projectId]);
         }
 
         $wasEdited = $this->projectRepository->edit($projectId, $data);
 
-        if ($wasEdited){
+        if ($wasEdited) {
             return $this->projectRepository->getById($projectId);
         }
 
@@ -96,13 +99,13 @@ class ProjectService
 
         $project = $this->projectRepository->getById($projectId);
 
-        if (empty($project)){
+        if (empty($project)) {
             throw new APIException("Trying to delete non-existing project", ['projectId' => $projectId]);
         }
 
         $userHaveProject = $this->userIsProjectOwner($userId, $projectId);
 
-        if (!$userHaveProject){
+        if (!$userHaveProject) {
             throw new APIException("Trying to delete project of other user", ['userId' => $userId, 'projectId' => $projectId]);
         }
 

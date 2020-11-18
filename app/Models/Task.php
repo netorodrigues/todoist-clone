@@ -16,7 +16,7 @@ class Task extends Model
         'title', 'description',
         'priority', 'user_id',
         'project_id', 'scheduled_date',
-        'remember_date'
+        'remember_date',
     ];
 
     /**
@@ -25,6 +25,6 @@ class Task extends Model
      * @var array
      */
     protected $hidden = [
-        'user_id', 'project_id'
+        'user_id', 'project_id',
     ];
 }

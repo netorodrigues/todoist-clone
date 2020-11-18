@@ -1,11 +1,9 @@
 <?php
 
-use Laravel\Lumen\Testing\DatabaseTransactions;
-
+use App\Exceptions\APIException;
 use App\Services\ProjectService;
 use App\Services\UserService;
-
-use App\Exceptions\APIException;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ProjectServiceTest extends TestCase
 {
@@ -17,7 +15,8 @@ class ProjectServiceTest extends TestCase
 
     private $nonExistingId = -1;
 
-    public function setUp(): void{
+    public function setUp(): void
+    {
         parent::setUp();
 
         $this->userService = app(UserService::class);
@@ -132,7 +131,7 @@ class ProjectServiceTest extends TestCase
         $response = $this->projectService->edit(
             $anotherUser['id'],
             $project['id'],
-            ["name" => 'forbidden-project-edit', "color" =>'#000']
+            ["name" => 'forbidden-project-edit', "color" => '#000']
         );
     }
 
@@ -165,8 +164,5 @@ class ProjectServiceTest extends TestCase
 
         $this->assertTrue($wasDeleted === true);
     }
-
-
-
 
 }

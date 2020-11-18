@@ -2,14 +2,15 @@
 
 namespace App\Services;
 
+class SessionService
+{
 
-class SessionService{
-
-    public function create(String $email, String $password){
+    public function create(String $email, String $password)
+    {
 
         $credentials = array(
             'email' => $email,
-            'password' => $password
+            'password' => $password,
         );
 
         $token = auth('api')->attempt($credentials);

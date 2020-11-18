@@ -1,9 +1,8 @@
 <?php
 
-use Laravel\Lumen\Testing\DatabaseTransactions;
-
-use App\Services\UserService;
 use App\Exceptions\APIException;
+use App\Services\UserService;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class UserServiceTest extends TestCase
 {
@@ -11,7 +10,8 @@ class UserServiceTest extends TestCase
     private $userService;
     private $invalidId = -1;
 
-    public function setUp(): void{
+    public function setUp(): void
+    {
         parent::setUp();
         $this->userService = app(UserService::class);
     }
@@ -21,7 +21,7 @@ class UserServiceTest extends TestCase
     {
         $response = $this->userService->create('name', 'email', 'password', 'prefer_name');
         $this->assertTrue(is_array($response));
-        $this->assertTrue(array_key_exists('id',$response));
+        $this->assertTrue(array_key_exists('id', $response));
     }
 
     /** @test */
@@ -68,8 +68,5 @@ class UserServiceTest extends TestCase
         $wasDeleted = $this->userService->delete($this->invalidId);
         $this->assertTrue($wasDeleted === true);
     }
-
-
-
 
 }
