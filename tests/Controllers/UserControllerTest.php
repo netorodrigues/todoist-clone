@@ -90,4 +90,32 @@ class UserControllerTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function api_must_allow_user_to_be_edited()
+    {
+        // case must be implemented
+        $this->assertTrue(false);
+    }
+
+    /** @test */
+    public function api_must_deny_edit_request_with_invalid_token()
+    {
+        // case must be implemented
+        $this->assertTrue(false);
+    }
+
+    /** @test */
+    public function api_must_allow_user_to_be_deleted()
+    {
+        // case must be implemented
+        $this->assertTrue(false);
+    }
+
+    /** @test */
+    public function api_must_deny_delete_request_with_invalid_token()
+    {
+        // case must be implemented
+        $this->assertTrue(false);
+    }
+
 }
