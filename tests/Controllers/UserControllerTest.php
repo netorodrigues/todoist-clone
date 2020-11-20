@@ -6,6 +6,25 @@ class UserControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
+    private function get_user_token()
+    {
+        $this->post('/api/users', [
+            'name' => 'user-name',
+            'email' => 'user-email@gmail.com',
+            'password' => 'user-password',
+            'password_confirmation' => 'user-password',
+        ])->seeJson([
+            'message' => 'CREATED',
+        ]);
+
+        $sessionResponse = $this->post('/api/users/login', [
+            'email' => 'user-email@gmail.com',
+            'password' => 'user-password',
+        ])->response;
+
+        return $sessionResponse['token'];
+    }
+
     /** @test */
     public function api_can_create_user()
     {
@@ -93,29 +112,50 @@ class UserControllerTest extends TestCase
     /** @test */
     public function api_must_allow_user_to_be_edited()
     {
-        // case must be implemented
-        $this->assertTrue(false);
+        $token = $this->get_user_token();
+
+        $this->put('/api/users', [
+            'name' => 'new-user-name',
+        ], [
+            'Authorization' => "Bearer {$token}",
+        ])->seeJson([
+            'message' => 'EDITED',
+        ]);
+
     }
 
     /** @test */
     public function api_must_deny_edit_request_with_invalid_token()
     {
-        // case must be implemented
-        $this->assertTrue(false);
+        $this->put('/api/users', [
+            'name' => 'new-user-name',
+        ], [
+            'Authorization' => "Bearer invalid-token",
+        ])->seeJson([
+            'status' => 'Authorization Token not defined or invalid',
+        ]);
     }
 
     /** @test */
     public function api_must_allow_user_to_be_deleted()
     {
-        // case must be implemented
-        $this->assertTrue(false);
+        $token = $this->get_user_token();
+
+        $this->delete('/api/users', [], [
+            'Authorization' => "Bearer {$token}",
+        ])->seeJson([
+            'message' => 'DELETED',
+        ]);
     }
 
     /** @test */
     public function api_must_deny_delete_request_with_invalid_token()
     {
-        // case must be implemented
-        $this->assertTrue(false);
+        $this->delete('/api/users', [], [
+            'Authorization' => "Bearer invalid-token",
+        ])->seeJson([
+            'status' => 'Authorization Token not defined or invalid',
+        ]);
     }
 
 }
