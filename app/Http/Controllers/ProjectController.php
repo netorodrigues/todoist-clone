@@ -21,13 +21,23 @@ class ProjectController extends Controller
     public function create(Request $request)
     {
         //validate incoming request
-        // $this->validate($request, [
-        //     'name' => 'required|string',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|confirmed',
-        // ]);
+        $this->validate($request, [
+            'name' => 'required|string',
+            'color' => 'required|string',
+        ]);
 
-        return response()->json([], 200);
+        $user = auth('api')->user();
+
+        $projectName = $request->input('name');
+        $projectColor = $request->input('color');
+
+        try {
+            $project = $this->projectService->create($user->id, $projectName, $projectColor);
+            return response()->json(['project' => $project, 'message' => 'CREATED'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Project creation failed!'], 409);
+        }
+
     }
 
     /**
@@ -37,17 +47,52 @@ class ProjectController extends Controller
      */
     public function get()
     {
-        return response()->json([], 200);
+
+        $user = auth('api')->user();
+
+        try {
+            $projects = $this->projectService->get($user->id);
+            return response()->json(['projects' => $projects], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to get user projects'], 409);
+        }
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-        return response()->json([], 200);
+        //validate incoming request
+        $this->validate($request, [
+            'project_id' => 'required|integer',
+        ]);
+
+        $user = auth('api')->user();
+        $projectId = $request->input('project_id');
+
+        try {
+            $project = $this->projectService->edit($user->id, $projectId, $request->except(['project_id']));
+            return response()->json(['project' => $project, 'message' => 'EDITED'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to edit user project'], 409);
+        }
+
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
-        return response()->json([], 200);
+        //validate incoming request
+        $this->validate($request, [
+            'project_id' => 'required|integer',
+        ]);
+
+        $user = auth('api')->user();
+        $projectId = $request->input('project_id');
+
+        try {
+            $project = $this->projectService->delete($user->id, $projectId);
+            return response()->json(['message' => 'DELETED'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete user project'], 409);
+        }
     }
 
 }

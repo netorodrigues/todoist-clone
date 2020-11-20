@@ -60,6 +60,18 @@ class ProjectService
         return $this->projectRepository->create($userId, $name, $color);
     }
 
+    public function get(Int $userId)
+    {
+
+        $user = $this->userRepository->getById($userId);
+
+        if (empty($user)) {
+            throw new APIException("Trying to get projects for non-existing user", ['userId' => $userId]);
+        }
+
+        return $this->projectRepository->getByUser($userId);
+    }
+
     public function edit(Int $userId, Int $projectId, array $data)
     {
         $user = $this->userRepository->getById($userId);

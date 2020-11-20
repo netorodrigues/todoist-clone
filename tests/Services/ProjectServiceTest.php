@@ -40,6 +40,35 @@ class ProjectServiceTest extends TestCase
     }
 
     /** @test */
+    public function can_return_list_of_user_projects()
+    {
+        $project = $this->projectService->create(
+            $this->userInstance['id'],
+            "test_project",
+            "#fff"
+        );
+
+        $projectList = $this->projectService->get(
+            $this->userInstance['id']
+        );
+
+        $this->assertTrue(count($projectList) === 1);
+
+        $project = $this->projectService->create(
+            $this->userInstance['id'],
+            "test_second_project",
+            "#000"
+        );
+
+        $projectList = $this->projectService->get(
+            $this->userInstance['id']
+        );
+
+        $this->assertTrue(count($projectList) === 2);
+
+    }
+
+    /** @test */
     public function cannot_create_project_with_invalid_color()
     {
         $this->expectException(APIException::class);

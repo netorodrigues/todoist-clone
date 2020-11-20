@@ -28,6 +28,20 @@ class ProjectControllerTest extends TestCase
         $this->userToken = $sessionResponse['token'];
     }
 
+    private function create_multiple_projects_for_user($projectsAmount)
+    {
+        for ($i = 1; $i <= $projectsAmount; $i++) {
+            $this->post('/api/projects', [
+                'name' => "project-number-{$i}",
+                'color' => '#FFFFFF',
+            ], [
+                'Authorization' => "Bearer {$this->userToken}",
+            ])->seeJson([
+                'message' => 'CREATED',
+            ]);
+        }
+    }
+
     /** @test */
     public function api_can_create_project()
     {
@@ -38,6 +52,49 @@ class ProjectControllerTest extends TestCase
             'Authorization' => "Bearer {$this->userToken}",
         ])->seeJson([
             'message' => 'CREATED',
+        ]);
+    }
+
+    /** @test */
+    public function api_can_edit_projects()
+    {
+        $projectResponse = $this->post('/api/projects', [
+            'name' => 'project-name',
+            'color' => '#FFFFFF',
+        ], [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->response;
+
+        $project = $projectResponse['project'];
+
+        $this->put('/api/projects', [
+            'project_id' => $project['id'],
+            'color' => '#000000',
+        ], [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->seeJson([
+            'message' => 'EDITED',
+        ]);
+    }
+
+    /** @test */
+    public function api_can_delete_projects()
+    {
+        $projectResponse = $this->post('/api/projects', [
+            'name' => 'project-name',
+            'color' => '#FFFFFF',
+        ], [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->response;
+
+        $project = $projectResponse['project'];
+
+        $this->delete('/api/projects', [
+            'project_id' => $project['id'],
+        ], [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->seeJson([
+            'message' => 'DELETED',
         ]);
     }
 
@@ -53,4 +110,19 @@ class ProjectControllerTest extends TestCase
             'status' => 'Authorization Token not defined or invalid',
         ]);
     }
+
+    /** @test */
+    public function api_must_return_all_user_projects()
+    {
+        $projectAmount = 5;
+        $this->create_multiple_projects_for_user($projectAmount);
+
+        $getProjectsResponse = $this->get('/api/projects', [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->response;
+
+        $projectsReceived = $getProjectsResponse['projects'];
+        $this->assertTrue(count($projectsReceived) === $projectAmount);
+    }
+
 }
