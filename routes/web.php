@@ -46,8 +46,12 @@ $router->group([
     'middleware' => ['auth-jwt'],
     'prefix' => 'api/tasks',
 ], function () use ($router) {
+
     $router->get('', 'TaskController@get');
     $router->post('', 'TaskController@create');
     $router->put('', 'TaskController@edit');
     $router->delete('', 'TaskController@delete');
+
+    $router->get('/done', 'TaskController@getDone');
+    $router->post('/done', 'TaskController@markDone');
 });

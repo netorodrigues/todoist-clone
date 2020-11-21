@@ -218,6 +218,43 @@ class TaskControllerTest extends TestCase
     }
 
     /** @test */
+    public function api_cannot_put_task_in_another_user_project()
+    {
+
+        $this->userService->create(
+            'another-name', 'another-email@gmail.com',
+            'another-password', 'prefer_name'
+        );
+
+        $sessionResponse = $this->post('/api/users/login', [
+            'email' => 'another-email@gmail.com',
+            'password' => 'another-password',
+        ])->response;
+
+        $anotherUserToken = $sessionResponse['token'];
+
+        $taskResponse = $this->post('/api/tasks', [
+            'priority' => 1,
+            'title' => 'task-title',
+            'description' => 'task-description',
+            'scheduled_date' => $this->dateExample,
+        ], [
+            'Authorization' => "Bearer {$anotherUserToken}",
+        ])->response;
+
+        $task = $taskResponse['task'];
+
+        $this->put('/api/tasks', [
+            'task_id' => $task['id'],
+            'project_id' => $this->projectInstance['id'],
+        ], [
+            'Authorization' => "Bearer {$anotherUserToken}",
+        ])->seeJson([
+            'message' => 'Failed to edit task for user',
+        ]);
+    }
+
+    /** @test */
     public function api_can_change_task_project()
     {
         $anotherProject = $this->projectService->create(
@@ -336,6 +373,109 @@ class TaskControllerTest extends TestCase
     public function api_cannot_get_tasks_for_invalid_user()
     {
         $taskResponse = $this->get('/api/tasks', [
+            'Authorization' => "Bearer invalid-token",
+        ])->seeJson([
+            'status' => 'Authorization Token not defined or invalid',
+        ]);
+    }
+
+    /** @test */
+    public function api_can_mark_task_as_done()
+    {
+        $taskResponse = $this->post('/api/tasks', [
+            'project_id' => $this->projectInstance['id'],
+            'priority' => 1,
+            'title' => 'task-title',
+            'description' => 'task-description',
+            'scheduled_date' => $this->dateExample,
+        ], [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->response;
+
+        $task = $taskResponse['task'];
+
+        $this->post('/api/tasks/done', [
+            'task_id' => $task['id'],
+        ], [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->seeJson([
+            'message' => 'DONE',
+        ]);
+    }
+
+    /** @test */
+    public function api_cannot_mark_another_user_task_as_done()
+    {
+        $taskResponse = $this->post('/api/tasks', [
+            'project_id' => $this->projectInstance['id'],
+            'priority' => 1,
+            'title' => 'task-title',
+            'description' => 'task-description',
+            'scheduled_date' => $this->dateExample,
+        ], [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->response;
+
+        $task = $taskResponse['task'];
+
+        $this->userService->create(
+            'another-name', 'another-email@gmail.com',
+            'another-password', 'prefer_name'
+        );
+
+        $sessionResponse = $this->post('/api/users/login', [
+            'email' => 'another-email@gmail.com',
+            'password' => 'another-password',
+        ])->response;
+
+        $anotherUserToken = $sessionResponse['token'];
+
+        $this->post('/api/tasks/done', [
+            'task_id' => $task['id'],
+        ], [
+            'Authorization' => "Bearer {$anotherUserToken}",
+        ])->seeJson([
+            'message' => 'Failed to delete task for user',
+        ]);
+    }
+
+    /** @test */
+    public function api_can_get_done_tasks_for_user()
+    {
+        $taskAmount = 5;
+
+        for ($i = 1; $i <= $taskAmount; $i++) {
+            $taskResponse = $this->post('/api/tasks', [
+                'project_id' => $this->projectInstance['id'],
+                'priority' => 1,
+                'title' => "task-title {$i}",
+                'description' => 'task-description',
+                'scheduled_date' => $this->dateExample,
+            ], [
+                'Authorization' => "Bearer {$this->userToken}",
+            ])->response;
+
+            $task = $taskResponse['task'];
+
+            $this->post('/api/tasks/done', [
+                'task_id' => $task['id'],
+            ], [
+                'Authorization' => "Bearer {$this->userToken}",
+            ]);
+        }
+
+        $taskResponse = $this->get('/api/tasks/done', [
+            'Authorization' => "Bearer {$this->userToken}",
+        ])->response;
+
+        $tasks = $taskResponse['tasks'];
+        $this->assertTrue(count($tasks) === $taskAmount);
+    }
+
+    /** @test */
+    public function api_cannot_get_done_tasks_for_invalid_user()
+    {
+        $taskResponse = $this->get('/api/tasks/done', [
             'Authorization' => "Bearer invalid-token",
         ])->seeJson([
             'status' => 'Authorization Token not defined or invalid',

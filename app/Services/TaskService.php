@@ -98,6 +98,16 @@ class TaskService
             ]);
         }
 
+        $projectId = $data['project_id'] ?? null;
+
+        if ($projectId) {
+            $isProjectOwner = $this->projectService->userIsProjectOwner($userId, $projectId);
+            if (!$isProjectOwner) {
+                throw new APIException("User is not project owner.",
+                    ['user_id' => $userId, 'project_id' => $projectId]);
+            }
+        }
+
         $wasEdit = $this->taskRepository->edit($taskId, $data);
 
         if (!$wasEdit) {

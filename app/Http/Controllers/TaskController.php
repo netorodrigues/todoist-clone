@@ -113,4 +113,41 @@ class TaskController extends Controller
         }
     }
 
+    public function markDone(Request $request)
+    {
+        //validate incoming request
+        $this->validate($request, [
+            'task_id' => 'required|integer',
+        ]);
+
+        $user = auth('api')->user();
+        $taskId = $request->input('task_id');
+
+        try {
+            $task = $this->taskService->markAsDone(
+                $user->id,
+                $taskId,
+            );
+
+            return response()->json(['message' => 'DONE'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete task for user'], 409);
+        }
+    }
+
+    public function getDone(Request $request)
+    {
+        $user = auth('api')->user();
+
+        try {
+            $tasks = $this->taskService->getDoneTasks(
+                $user->id,
+            );
+
+            return response()->json(['tasks' => $tasks, 'message' => 'DONE'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete task for user'], 409);
+        }
+    }
+
 }
