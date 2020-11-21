@@ -14,8 +14,8 @@ class TaskRepository implements TaskRepositoryInterface
         String $priority,
         String $title,
         String $description,
-        String $scheduledDate,
-        String $rememberDate
+        ?String $scheduledDate,
+        ?String $rememberDate
     ): array{
 
         $task = new Task;

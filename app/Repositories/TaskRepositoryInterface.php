@@ -7,12 +7,12 @@ interface TaskRepositoryInterface
 
     public function create(
         Int $userId,
-        Int $projectId,
+        ?Int $projectId,
         String $priority,
         String $title,
         String $description,
-        String $scheduledDate,
-        String $rememberDate
+        ?String $scheduledDate,
+        ?String $rememberDate
     ): array;
 
     public function getById(Int $taskId): array;

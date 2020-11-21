@@ -42,7 +42,7 @@ class TaskService
     }
 
     public function create(Int $userId, ?Int $projectId, String $priority,
-        String $title, String $description, String $scheduledDate, String $rememberDate) {
+        String $title, String $description, ?String $scheduledDate, ?String $rememberDate) {
         $existingUser = $this->userRepository->getById($userId);
 
         if (empty($existingUser)) {

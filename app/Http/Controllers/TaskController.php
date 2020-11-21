@@ -21,13 +21,33 @@ class TaskController extends Controller
     public function create(Request $request)
     {
         //validate incoming request
-        // $this->validate($request, [
-        //     'name' => 'required|string',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|confirmed',
-        // ]);
+        $this->validate($request, [
+            'title' => 'required|string',
+            'priority' => 'required|integer',
+        ]);
 
-        return response()->json([], 200);
+        $user = auth('api')->user();
+
+        $requestData = $request->only([
+            'title', 'description', 'project_id',
+            'scheduled_date', 'remember_date', 'priority',
+        ]);
+
+        try {
+            $task = $this->taskService->create(
+                $user->id,
+                $requestData['project_id'] ?? null,
+                $requestData['priority'],
+                $requestData['title'],
+                $requestData['description'],
+                $requestData['scheduled_date'] ?? null,
+                $requestData['remember_date'] ?? null,
+            );
+
+            return response()->json(['message' => 'CREATED', 'task' => $task], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to create task for user'], 409);
+        }
     }
 
     /**
