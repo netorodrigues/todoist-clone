@@ -57,17 +57,60 @@ class TaskController extends Controller
      */
     public function get()
     {
-        return response()->json([], 200);
+        $user = auth('api')->user();
+
+        try {
+            $tasks = $this->taskService->get($user->id);
+            return response()->json(['tasks' => $tasks], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to get tasks for user'], 409);
+        }
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-        return response()->json([], 200);
+        //validate incoming request
+        $this->validate($request, [
+            'task_id' => 'required|integer',
+        ]);
+
+        $user = auth('api')->user();
+
+        $requestData = $request->except(['task_id']);
+        $taskId = $request->input('task_id');
+        try {
+            $task = $this->taskService->edit(
+                $user->id,
+                $taskId,
+                $requestData
+            );
+
+            return response()->json(['message' => 'EDITED', 'task' => $task], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to edit task for user'], 409);
+        }
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
-        return response()->json([], 200);
+        //validate incoming request
+        $this->validate($request, [
+            'task_id' => 'required|integer',
+        ]);
+
+        $user = auth('api')->user();
+        $taskId = $request->input('task_id');
+
+        try {
+            $task = $this->taskService->delete(
+                $user->id,
+                $taskId,
+            );
+
+            return response()->json(['message' => 'DELETED'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete task for user'], 409);
+        }
     }
 
 }

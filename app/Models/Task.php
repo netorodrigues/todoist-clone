@@ -25,6 +25,6 @@ class Task extends Model
      * @var array
      */
     protected $hidden = [
-        'user_id', 'project_id',
+        'user_id',
     ];
 }

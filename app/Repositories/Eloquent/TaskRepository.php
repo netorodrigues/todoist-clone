@@ -41,7 +41,8 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function getByUser(Int $userId): array
     {
-        $tasks = Task::where('user_id', $userId)->get();
+        $tasks = Task::where('user_id', $userId)
+            ->where('is_done', false)->get();
         return $tasks->toArray();
     }
 

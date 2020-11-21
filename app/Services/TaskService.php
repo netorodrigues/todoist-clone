@@ -78,6 +78,10 @@ class TaskService
         return $this->taskRepository->markAsDone($taskId);
     }
 
+    public function get(Int $userId)
+    {
+        return $this->taskRepository->getByUser($userId);
+    }
     public function getDoneTasks(Int $userId)
     {
         return $this->taskRepository->getDoneByUser($userId);
