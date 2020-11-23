@@ -14,7 +14,7 @@ class TaskServiceTest extends TestCase
     private $userService;
     private $projectService;
 
-    private $invalidId = -1;
+    private $invalidId = '5aa73a44-2d83-11eb-adc1-0242ac120002';
 
     public function setUp(): void
     {

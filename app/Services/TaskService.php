@@ -27,7 +27,7 @@ class TaskService
 
     }
 
-    private function userIsTaskOwner($userId, $taskId)
+    private function userIsTaskOwner(String $userId, String $taskId)
     {
         $tasks = $this->taskRepository->getByUser($userId);
 
@@ -41,7 +41,7 @@ class TaskService
 
     }
 
-    public function create(Int $userId, ?Int $projectId, String $priority,
+    public function create(String $userId, ?String $projectId, String $priority,
         String $title, String $description, ?String $scheduledDate, ?String $rememberDate) {
         $existingUser = $this->userRepository->getById($userId);
 
@@ -63,7 +63,7 @@ class TaskService
         );
     }
 
-    public function markAsDone(Int $userId, Int $taskId)
+    public function markAsDone(String $userId, String $taskId)
     {
 
         $isOwner = $this->userIsTaskOwner($userId, $taskId);
@@ -78,16 +78,16 @@ class TaskService
         return $this->taskRepository->markAsDone($taskId);
     }
 
-    public function get(Int $userId)
+    public function get(String $userId)
     {
         return $this->taskRepository->getByUser($userId);
     }
-    public function getDoneTasks(Int $userId)
+    public function getDoneTasks(String $userId)
     {
         return $this->taskRepository->getDoneByUser($userId);
     }
 
-    public function edit(Int $userId, Int $taskId, array $data)
+    public function edit(String $userId, String $taskId, array $data)
     {
         $isOwner = $this->userIsTaskOwner($userId, $taskId);
 
@@ -117,7 +117,7 @@ class TaskService
         return $this->taskRepository->getById($taskId);
     }
 
-    public function delete(Int $userId, Int $taskId)
+    public function delete(String $userId, String $taskId)
     {
         $isOwner = $this->userIsTaskOwner($userId, $taskId);
 

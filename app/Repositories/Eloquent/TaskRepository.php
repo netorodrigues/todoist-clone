@@ -9,8 +9,8 @@ class TaskRepository implements TaskRepositoryInterface
 {
 
     public function create(
-        Int $userId,
-        ?Int $projectId,
+        String $userId,
+        ?String $projectId,
         String $priority,
         String $title,
         String $description,
@@ -33,26 +33,26 @@ class TaskRepository implements TaskRepositoryInterface
         return $task->toArray();
     }
 
-    public function getById(Int $taskId): array
+    public function getById(String $taskId): array
     {
         $task = Task::find($taskId);
         return $task ? $task->toArray() : [];
     }
 
-    public function getByUser(Int $userId): array
+    public function getByUser(String $userId): array
     {
         $tasks = Task::where('user_id', $userId)
             ->where('is_done', false)->get();
         return $tasks->toArray();
     }
 
-    public function getByProject(Int $projectId): array
+    public function getByProject(String $projectId): array
     {
         $tasks = Task::where('project_id', $projectId)->get();
         return $tasks->toArray();
     }
 
-    public function getDoneByUser(Int $userId): array
+    public function getDoneByUser(String $userId): array
     {
 
         $tasks = Task::where('user_id', $userId)
@@ -60,7 +60,7 @@ class TaskRepository implements TaskRepositoryInterface
         return $tasks->toArray();
     }
 
-    public function markAsDone(Int $taskId): bool
+    public function markAsDone(String $taskId): bool
     {
 
         $task = Task::find($taskId);
@@ -75,7 +75,7 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     public function edit(
-        Int $taskId,
+        String $taskId,
         array $data
     ): bool {
         $task = Task::find($taskId);
@@ -90,7 +90,7 @@ class TaskRepository implements TaskRepositoryInterface
         return true;
     }
 
-    public function delete(Int $taskId): bool
+    public function delete(String $taskId): bool
     {
         $task = Task::find($taskId);
 

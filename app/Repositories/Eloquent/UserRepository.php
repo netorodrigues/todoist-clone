@@ -8,7 +8,7 @@ use App\Repositories\UserRepositoryInterface;
 class UserRepository implements UserRepositoryInterface
 {
 
-    public function getById(Int $userId): array
+    public function getById(String $userId): array
     {
         $user = User::find($userId);
 
@@ -35,7 +35,7 @@ class UserRepository implements UserRepositoryInterface
         return $user->toArray();
     }
 
-    public function edit(Int $userId, array $data): bool
+    public function edit(String $userId, array $data): bool
     {
         $user = User::find($userId);
         if (!$user) {
@@ -48,7 +48,7 @@ class UserRepository implements UserRepositoryInterface
         return true;
     }
 
-    public function delete(Int $userId): bool
+    public function delete(String $userId): bool
     {
         $user = User::find($userId);
 

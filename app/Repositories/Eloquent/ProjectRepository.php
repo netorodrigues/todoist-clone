@@ -8,20 +8,20 @@ use App\Repositories\ProjectRepositoryInterface;
 class ProjectRepository implements ProjectRepositoryInterface
 {
 
-    public function getById(Int $projectId): array
+    public function getById(String $projectId): array
     {
         $project = Project::find($projectId);
 
         return $project ? $project->toArray() : [];
     }
 
-    public function getByUser(Int $userId): array
+    public function getByUser(String $userId): array
     {
         $projects = Project::where('user_id', $userId)->get();
         return $projects->toArray();
     }
 
-    public function create(Int $userId, String $name, String $color): array
+    public function create(String $userId, String $name, String $color): array
     {
         $project = new Project;
         $project->user_id = $userId;
@@ -32,7 +32,7 @@ class ProjectRepository implements ProjectRepositoryInterface
         return $project->toArray();
     }
 
-    public function edit(Int $projectId, array $data): bool
+    public function edit(String $projectId, array $data): bool
     {
         $project = Project::find($projectId);
         if (!$project) {
@@ -45,7 +45,7 @@ class ProjectRepository implements ProjectRepositoryInterface
         return true;
     }
 
-    public function delete(Int $projectId): bool
+    public function delete(String $projectId): bool
     {
         $project = Project::find($projectId);
         if ($project) {

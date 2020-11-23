@@ -45,7 +45,7 @@ class ProjectService
         return false;
     }
 
-    public function create(Int $userId, String $name, String $color)
+    public function create(String $userId, String $name, String $color)
     {
         $user = $this->userRepository->getById($userId);
 
@@ -60,7 +60,7 @@ class ProjectService
         return $this->projectRepository->create($userId, $name, $color);
     }
 
-    public function get(Int $userId)
+    public function get(String $userId)
     {
 
         $user = $this->userRepository->getById($userId);
@@ -72,7 +72,7 @@ class ProjectService
         return $this->projectRepository->getByUser($userId);
     }
 
-    public function edit(Int $userId, Int $projectId, array $data)
+    public function edit(String $userId, String $projectId, array $data)
     {
         $user = $this->userRepository->getById($userId);
 
@@ -101,7 +101,7 @@ class ProjectService
         return false;
     }
 
-    public function delete(Int $userId, Int $projectId)
+    public function delete(String $userId, String $projectId)
     {
         $user = $this->userRepository->getById($userId);
 

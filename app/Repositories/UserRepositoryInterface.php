@@ -12,15 +12,15 @@ interface UserRepositoryInterface
         String $password
     ): array;
 
-    public function getById(Int $userId): array;
+    public function getById(String $userId): array;
 
     public function getByEmail(String $email): array;
 
     public function edit(
-        Int $userId,
+        String $userId,
         array $data
     ): bool;
 
-    public function delete(Int $userId): bool;
+    public function delete(String $userId): bool;
 
 }

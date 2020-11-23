@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-
+    use GeneratesUuid;
     /**
      * The attributes that are mass assignable.
      *
@@ -27,4 +28,13 @@ class Task extends Model
     protected $hidden = [
         'user_id',
     ];
+
+    protected $casts = [
+        'id' => 'string',
+    ];
+
+    public function uuidColumn(): string
+    {
+        return 'id';
+    }
 }

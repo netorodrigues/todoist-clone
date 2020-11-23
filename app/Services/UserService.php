@@ -29,7 +29,7 @@ class UserService
         return $user;
     }
 
-    public function edit(Int $userId, array $data)
+    public function edit(String $userId, array $data)
     {
         $userExists = $this->userRepository->getById($userId);
 
@@ -46,7 +46,7 @@ class UserService
         return false;
     }
 
-    public function delete(Int $userId)
+    public function delete(String $userId)
     {
         return $this->userRepository->delete($userId);
     }

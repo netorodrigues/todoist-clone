@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -12,7 +13,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, HasFactory;
+    use Authenticatable, Authorizable, HasFactory, GeneratesUuid;
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +32,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password', 'created_at', 'updated_at',
     ];
+
+    protected $casts = [
+        'id' => 'string',
+    ];
+
+    public function uuidColumn(): string
+    {
+        return 'id';
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
