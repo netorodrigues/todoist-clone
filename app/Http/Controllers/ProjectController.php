@@ -62,7 +62,7 @@ class ProjectController extends Controller
     {
         //validate incoming request
         $this->validate($request, [
-            'project_id' => 'required|integer',
+            'project_id' => 'required|string',
         ]);
 
         $user = auth('api')->user();
@@ -81,7 +81,7 @@ class ProjectController extends Controller
     {
         //validate incoming request
         $this->validate($request, [
-            'project_id' => 'required|integer',
+            'project_id' => 'required|string',
         ]);
 
         $user = auth('api')->user();

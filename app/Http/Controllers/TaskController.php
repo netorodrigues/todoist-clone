@@ -71,7 +71,7 @@ class TaskController extends Controller
     {
         //validate incoming request
         $this->validate($request, [
-            'task_id' => 'required|integer',
+            'task_id' => 'required|string',
         ]);
 
         $user = auth('api')->user();
@@ -95,7 +95,7 @@ class TaskController extends Controller
     {
         //validate incoming request
         $this->validate($request, [
-            'task_id' => 'required|integer',
+            'task_id' => 'required|string',
         ]);
 
         $user = auth('api')->user();
@@ -117,7 +117,7 @@ class TaskController extends Controller
     {
         //validate incoming request
         $this->validate($request, [
-            'task_id' => 'required|integer',
+            'task_id' => 'required|string',
         ]);
 
         $user = auth('api')->user();

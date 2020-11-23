@@ -8,7 +8,7 @@ class UserServiceTest extends TestCase
 {
     use DatabaseTransactions;
     private $userService;
-    private $invalidId = -1;
+    private $invalidId = '5aa73a44-2d83-11eb-adc1-0242ac120002';
 
     public function setUp(): void
     {

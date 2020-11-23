@@ -13,7 +13,7 @@ class ProjectServiceTest extends TestCase
     private $userService;
     private $userInstance;
 
-    private $nonExistingId = -1;
+    private $nonExistingId = '5aa73a44-2d83-11eb-adc1-0242ac120002';
 
     public function setUp(): void
     {
