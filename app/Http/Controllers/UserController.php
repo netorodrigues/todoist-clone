@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -37,10 +38,10 @@ class UserController extends Controller
 
             $user = $this->userService->create($name, $email, $password, $preferName);
 
-            return response()->json(['user' => $user, 'message' => 'CREATED'], 201);
+            return response()->json(['user' => $user, 'message' => 'CREATED'], Response::HTTP_OK);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'User Registration Failed!'], 409);
+            return response()->json(['message' => 'User Registration Failed!'], Response::HTTP_BAD_REQUEST);
         }
 
     }
@@ -52,7 +53,7 @@ class UserController extends Controller
      */
     public function get()
     {
-        return response()->json(auth('api')->user(), 200);
+        return response()->json(auth('api')->user(), Response::HTTP_OK);
     }
 
     public function edit(Request $request)
@@ -66,7 +67,7 @@ class UserController extends Controller
             return response()->json(['user' => $user, 'message' => 'EDITED'], 201);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to edit user information'], 409);
+            return response()->json(['message' => 'Failed to edit user information'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -81,10 +82,10 @@ class UserController extends Controller
             return response()->json(['message' => 'DELETED'], 201);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to delete user'], 409);
+            return response()->json(['message' => 'Failed to delete user'], Response::HTTP_BAD_REQUEST);
         }
 
-        return response()->json([], 200);
+        return response()->json([], Response::HTTP_OK);
     }
 
 }

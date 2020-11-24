@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\SessionService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
@@ -44,10 +45,10 @@ class SessionController extends Controller
                 'token' => $token,
                 'token_type' => 'bearer',
                 'expires_in' => Auth::factory()->getTTL() * 60,
-            ], 200);
+            ], Response::HTTP_OK);
 
         } catch (Exception $e) {
-            return response()->json(['message' => 'Unauthorized.'], 401);
+            return response()->json(['message' => 'Unauthorized.'], Response::HTTP_UNAUTHORIZED);
 
         }
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
@@ -44,9 +45,9 @@ class TaskController extends Controller
                 $requestData['remember_date'] ?? null,
             );
 
-            return response()->json(['message' => 'CREATED', 'task' => $task], 200);
+            return response()->json(['message' => 'CREATED', 'task' => $task], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to create task for user'], 409);
+            return response()->json(['message' => 'Failed to create task for user'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -61,9 +62,9 @@ class TaskController extends Controller
 
         try {
             $tasks = $this->taskService->get($user->id);
-            return response()->json(['tasks' => $tasks], 200);
+            return response()->json(['tasks' => $tasks], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to get tasks for user'], 409);
+            return response()->json(['message' => 'Failed to get tasks for user'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -85,9 +86,9 @@ class TaskController extends Controller
                 $requestData
             );
 
-            return response()->json(['message' => 'EDITED', 'task' => $task], 200);
+            return response()->json(['message' => 'EDITED', 'task' => $task], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to edit task for user'], 409);
+            return response()->json(['message' => 'Failed to edit task for user'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -107,9 +108,9 @@ class TaskController extends Controller
                 $taskId,
             );
 
-            return response()->json(['message' => 'DELETED'], 200);
+            return response()->json(['message' => 'DELETED'], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to delete task for user'], 409);
+            return response()->json(['message' => 'Failed to delete task for user'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -129,9 +130,9 @@ class TaskController extends Controller
                 $taskId,
             );
 
-            return response()->json(['message' => 'DONE'], 200);
+            return response()->json(['message' => 'DONE'], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to delete task for user'], 409);
+            return response()->json(['message' => 'Failed to delete task for user'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -144,9 +145,9 @@ class TaskController extends Controller
                 $user->id,
             );
 
-            return response()->json(['tasks' => $tasks, 'message' => 'DONE'], 200);
+            return response()->json(['tasks' => $tasks, 'message' => 'DONE'], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to delete task for user'], 409);
+            return response()->json(['message' => 'Failed to delete task for user'], Response::HTTP_BAD_REQUEST);
         }
     }
 
