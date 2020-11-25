@@ -34,16 +34,22 @@ class UserController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
         $preferName = $request->input('prefer_name') ?? '';
+
         try {
 
             $user = $this->userService->create($name, $email, $password, $preferName);
 
-            return response()->json(['user' => $user, 'message' => 'CREATED'], Response::HTTP_OK);
+            return response()->json(
+                ['user' => $user, 'message' => 'CREATED'],
+                Response::HTTP_OK
+            );
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'User Registration Failed!'], Response::HTTP_BAD_REQUEST);
+            return response()->json(
+                ['message' => 'User Registration Failed!'],
+                Response::HTTP_BAD_REQUEST
+            );
         }
-
     }
 
     /**
