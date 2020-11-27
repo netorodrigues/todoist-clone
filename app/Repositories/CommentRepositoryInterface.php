@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-interface UserRepositoryInterface
+interface CommentRepositoryInterface
 {
 
     public function create(

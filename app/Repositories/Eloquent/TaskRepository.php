@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\Task;
 use App\Repositories\TaskRepositoryInterface;
 
-class TaskRepository implements TaskRepositoryInterface
+final class TaskRepository implements TaskRepositoryInterface
 {
 
     public function create(

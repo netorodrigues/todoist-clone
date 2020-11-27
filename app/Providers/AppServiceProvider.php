@@ -27,5 +27,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\TaskRepositoryInterface',
             'App\Repositories\Eloquent\TaskRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\CommentRepositoryInterface',
+            'App\Repositories\Eloquent\CommentRepository'
+        );
     }
 }

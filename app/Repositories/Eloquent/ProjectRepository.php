@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\Project;
 use App\Repositories\ProjectRepositoryInterface;
 
-class ProjectRepository implements ProjectRepositoryInterface
+final class ProjectRepository implements ProjectRepositoryInterface
 {
 
     public function getById(String $projectId): array
