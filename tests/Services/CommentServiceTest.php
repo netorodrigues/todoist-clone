@@ -70,7 +70,9 @@ class CommentServiceTest extends TestCase
     {
         $this->expectException(APIException::class);
         $this->commentService->createForTask(
-            $this->invalidId, $this->taskInstance['id'], 'comment content'
+            $this->invalidId,
+            $this->taskInstance['id'],
+            'comment content'
         );
     }
 
@@ -80,15 +82,27 @@ class CommentServiceTest extends TestCase
 
         $this->expectException(APIException::class);
         $this->commentService->createForProject(
-            $this->invalidId, $this->projectInstance['id'], 'comment content'
+            $this->invalidId,
+            $this->projectInstance['id'],
+            'comment content'
         );
     }
 
     /** @test */
     public function can_create_comments_in_other_users_projects()
     {
-        // to be implemented
-        $this->assertTrue(false);
+        $anotherUser = $this->userService->create(
+            'another-user-name', 'another-email', 'another-password', 'prefer_name'
+        );
+
+        $response = $this->commentService->createForProject(
+            $anotherUser['id'],
+            $this->projectInstance['id'],
+            'comment content'
+        );
+
+        $this->assertTrue(is_array($response));
+
     }
 
     /** @test */
