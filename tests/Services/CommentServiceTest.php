@@ -68,15 +68,20 @@ class CommentServiceTest extends TestCase
     /** @test */
     public function cannot_create_comments_for_invalid_user()
     {
-        // to be implemented
-        $this->assertTrue(false);
+        $this->expectException(APIException::class);
+        $this->commentService->createForTask(
+            $this->invalidId, $this->taskInstance['id'], 'comment content'
+        );
     }
 
     /** @test */
     public function cannot_create_comments_for_invalid_project()
     {
-        // to be implemented
-        $this->assertTrue(false);
+
+        $this->expectException(APIException::class);
+        $this->commentService->createForProject(
+            $this->invalidId, $this->projectInstance['id'], 'comment content'
+        );
     }
 
     /** @test */
