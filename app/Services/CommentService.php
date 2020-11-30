@@ -24,6 +24,21 @@ class CommentService
         return false;
     }
 
+    public function getForUser(String $userId)
+    {
+        return false;
+    }
+
+    public function getForProject(String $projectId)
+    {
+        return false;
+    }
+
+    public function getForTask(String $taskId)
+    {
+        return false;
+    }
+
     public function edit(String $userId, String $commentId, array $data)
     {
         return false;

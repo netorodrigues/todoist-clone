@@ -108,23 +108,56 @@ class CommentServiceTest extends TestCase
     /** @test */
     public function can_get_comments_for_user()
     {
-        // to be implemented
-        $this->assertTrue(false);
+
+        $this->commentService->createForTask(
+            $this->userInstance['id'], $this->taskInstance['id'], 'comment content'
+        );
+
+        $this->commentService->createForProject(
+            $this->userInstance['id'], $this->projectInstance['id'], 'comment content'
+        );
+
+        $response = $this->commentService->getForUser($this->userInstance['id']);
+
+        $this->assertTrue(count($response) === 2);
+
     }
 
     /** @test */
     public function can_get_comments_for_project()
     {
-        // to be implemented
-        $this->assertTrue(false);
+        $this->commentService->createForTask(
+            $this->userInstance['id'], $this->taskInstance['id'], 'comment content'
+        );
+
+        $this->commentService->createForProject(
+            $this->userInstance['id'], $this->projectInstance['id'], 'comment content'
+        );
+
+        $response = $this->commentService->getForProject($this->projectInstance['id']);
+
+        $this->assertTrue(count($response) === 1);
 
     }
 
     /** @test */
     public function can_get_comments_for_task()
     {
-        // to be implemented
-        $this->assertTrue(false);
+        $this->commentService->createForTask(
+            $this->userInstance['id'], $this->taskInstance['id'], 'comment content'
+        );
+
+        $this->commentService->createForTask(
+            $this->userInstance['id'], $this->taskInstance['id'], 'another comment'
+        );
+
+        $this->commentService->createForProject(
+            $this->userInstance['id'], $this->projectInstance['id'], 'comment content'
+        );
+
+        $response = $this->commentService->getForTask($this->taskInstance['id']);
+
+        $this->assertTrue(count($response) === 2);
 
     }
 
