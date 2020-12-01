@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Models\Comment;
 use App\Repositories\CommentRepositoryInterface;
 
 final class CommentRepository implements CommentRepositoryInterface
@@ -13,7 +14,15 @@ final class CommentRepository implements CommentRepositoryInterface
         ?String $taskId,
         String $content
     ): array{
-        return [];
+        $comment = new Comment;
+
+        $comment->user_id = $userId;
+        $comment->project_id = $projectId ?? null;
+        $comment->task_id = $taskId ?? null;
+        $comment->content = $content;
+        $comment->save();
+
+        return $comment->toArray();
     }
 
     public function getById(String $commentId): array
