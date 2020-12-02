@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\APIException;
 use App\Services\CommentService;
 use App\Services\ProjectService;
 use App\Services\TaskService;

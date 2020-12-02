@@ -23,7 +23,9 @@ class CommentService
 
     public function createForTask(String $userId, String $taskId, String $content)
     {
-        return false;
+        $comment = $this->commentRepository->create($userId, null, $taskId, $content);
+
+        return $comment;
     }
 
     public function getForUser(String $userId)
