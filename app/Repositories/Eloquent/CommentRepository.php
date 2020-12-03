@@ -27,12 +27,26 @@ final class CommentRepository implements CommentRepositoryInterface
 
     public function getById(String $commentId): array
     {
-        return [];
+        $comment = Comment::find($userId);
+        return $comment ? $comments->toArray() : [];
+    }
+
+    public function getByTask(String $taskId): array
+    {
+        $comments = Comment::where('task_id', $taskId)->get();
+        return $comments->toArray();
+    }
+
+    public function getByProject(String $projectId): array
+    {
+        $comments = Comment::where('project_id', $projectId)->get();
+        return $comments->toArray();
     }
 
     public function getByUser(String $userId): array
     {
-        return [];
+        $comments = Comment::where('user_id', $userId)->get();
+        return $comments->toArray();
     }
 
     public function edit(

@@ -78,6 +78,18 @@ class CommentServiceTest extends TestCase
     }
 
     /** @test */
+    public function cannot_create_comments_for_invalid_task()
+    {
+
+        $this->expectException(APIException::class);
+        $this->commentService->createForTask(
+            $this->userInstance['id'],
+            $this->invalidId,
+            'comment content'
+        );
+    }
+
+    /** @test */
     public function cannot_create_comments_for_invalid_project()
     {
 

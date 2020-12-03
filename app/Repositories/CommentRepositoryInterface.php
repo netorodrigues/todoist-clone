@@ -14,6 +14,10 @@ interface CommentRepositoryInterface
 
     public function getById(String $commentId): array;
 
+    public function getByProject(String $projectId): array;
+
+    public function getByTask(String $taskId): array;
+
     public function getByUser(String $userId): array;
 
     public function edit(
